@@ -405,6 +405,18 @@ files:
         }
     }
   learner_created: false
+- name: src/crossword/Crossword.java
+  visible: true
+  learner_created: true
+- name: src/crossword/Commander.java
+  visible: true
+  learner_created: true
+- name: src/crossword/Command.java
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/275/stages/1394/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Fri, 11 Aug 2023 16:45:37 UTC"
 record: -1

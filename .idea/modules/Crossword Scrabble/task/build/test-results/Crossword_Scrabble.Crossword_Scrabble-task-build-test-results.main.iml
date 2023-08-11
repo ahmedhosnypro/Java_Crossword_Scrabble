@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":Crossword_Scrabble-task-build-test-results:main" external.linked.project.path="$MODULE_DIR$/../../../../../../Crossword Scrabble/task/build/test-results" external.root.project.path="$MODULE_DIR$/../../../../../.." external.system.id="GRADLE" external.system.module.group="Crossword Scrabble" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../../../../../Crossword Scrabble/task/build/test-results/out/production/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../../../../Crossword Scrabble/task/build/test-results/src" />
+    <orderEntry type="jdk" jdkName="jbr-17" jdkType="JavaSDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="be9f8786-dce7-4fd8-89df-1d1a9b2909ee" />
+  </component>
+</module>
