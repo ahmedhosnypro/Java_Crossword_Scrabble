@@ -1,0 +1,765 @@
+type: edu
+files:
+- name: src/crossword/Main.java
+  visible: true
+  text: |-
+    package crossword;
+
+    public class Main {
+        public static void main(String[] args) {
+            System.out.println("Hello World!");
+        }
+    }
+  learner_created: false
+- name: src/crosswordScrabble.json
+  visible: true
+  learner_created: false
+- name: src/crosswordScrabble.txt
+  visible: true
+  text: |-
+    eaMgria Maria 4 9 ACR Grama 7 5 ACR Marriage 9 2 ACR Grime 11 2 ACR Mega 9 2 DWN Imager 4 5 DWN Mirage 4 9 DWN
+    Playfull Play 4 10 ACR Lapful 7 5 ACR Fully 10 3 ACR Layup 13 7 ACR Pull 4 10 DWN Playful 7 7 DWN Yap 11 11 DWN Flu 10 3 DWN
+    Edition Edition 5 7 ACR Iodine 9 7 ACR Noted 10 3 ACR ident 12 5 ACR End 7 10 ACR Tenioid 4 7 DWN Dent 9 9 DWN die 7 12 DWN ion 5 11 DWN
+    Friends Fined 4 9 ACR Fern 8 6 ACR Serif 10 9 ACR Fed 8 6 DWN Friends 4 9 DWN Den 4 13 DWN Fired 10 13 DWN
+    Deliver Devil 3 4 ACR Liver 5 6 ACR Relieved 9 4 ACR reived 11 10 ACR Delied 3 4 DWN Lever 3 7 DWN Elder 9 5 DWN Derive 9 10 DWN
+    Sparrow Roars 6 4 ACR Pows 7 8 ACR Arrow 9 7 ACR raws 10 11 ACR warps 12 8 ACR swap 9 1 ACR Rasp 6 4 DWN wraps 9 11 DWN Sparrow 6 8 DWN
+    Dancing Acid 8 10 ACR Caning 10 10 ACR Cain 12 7 ACR Gain 11 8 DWN Dancing 7 10 DWN Nag 10 14 DWN
+    Futuresl Turf 4 9 ACR Future 7 4 ACR Fuse 12 5 ACR Rut 10 2 ACR Fret 7 4 DWN Left 4 6 DWN Uterus 7 7 DWN True 4 9 DWN
+    Sconced Second 3 9 ACR Once 5 9 ACR Conned 7 9 ACR Nodes 9 7 ACR Send 13 4 ACR Nosed 9 7 DWN sconced 3 9 DWN Cones 5 11 DWN
+    Lengthy Gent 6 12 ACR Lent 10 12 ACR then 8 9 ACR lengthy 11 6 ACR leg 11 6 DWN Gel 11 9 DWN Gently 6 12 DWN
+  learner_created: false
+- name: src/scrabbleTilesDistribution.txt
+  visible: true
+  text: |-
+    A 9
+    B 2
+    C 2
+    D 4
+    E 12
+    F 2
+    G 3
+    H 2
+    I 9
+    J 1
+    K 1
+    L 4
+    M 2
+    N 6
+    O 8
+    P 2
+    Q 1
+    R 6
+    S 4
+    T 6
+    U 4
+    V 2
+    W 2
+    X 1
+    Y 2
+    Z 1
+    * 2
+  learner_created: false
+- name: test/Stage3Test.java
+  visible: false
+  text: |-
+    import org.hyperskill.hstest.dynamic.DynamicTest;
+    import org.hyperskill.hstest.exception.outcomes.TestPassed;
+    import org.hyperskill.hstest.exception.outcomes.WrongAnswer;
+    import org.hyperskill.hstest.stage.StageTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import org.hyperskill.hstest.testing.TestedProgram;
+
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class Stage3Test  extends StageTest {
+        String tray ="";
+        List<String> bags = new ArrayList<>();
+        static int ROW = 15;
+        static int COL = 15;
+        static String[][] board = new String[ROW][COL];
+        static String[][] emptyBoard = new String[ROW][COL];
+        static String[][] correctBoard = new String[ROW][COL];
+        @DynamicTest
+        CheckResult test1() {
+            TestedProgram pr = new TestedProgram();
+            String output = pr.start("./src/scrabbleTilesDistribution.txt");
+            String[] p1 = output.trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            String bag ="AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ**";
+
+            bags.add(bag);
+            ArrayList<String> p = new ArrayList<>();
+
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            if(p.size()<22){
+                throw new WrongAnswer("""
+                        Your output is not formatted correctly. It should be as follows:
+                        "Welcome to Crossword Scrabble
+                        Board
+                        Bag: 'tiles distribution'
+                        Menu\"""");
+            }
+            if(!p.get(0).toLowerCase().trim().contains("Welcome to Crossword Scrabble".toLowerCase())){
+                throw new WrongAnswer("Your output should contain the game title " +
+                        "\"Welcome to Crossword Scrabble\"");
+            }
+            if (p.get(17).equalsIgnoreCase("tray: ") ){
+                throw new WrongAnswer("Your program should not print an empty tray.");
+            } else if (!p.get(17).startsWith("Bag: ") ){
+                throw new WrongAnswer("Your output for bag should start with " +
+                        "\"Bag: \",");
+            }
+            if (p.get(17).length()< 105){
+                throw new WrongAnswer("Your program generates less tiles than expected. Your program should read the data from the file correctly");
+            }
+            if (p.get(17).length() > 105){
+                throw new WrongAnswer("Your program generates more more tiles than expected. Your program should read the data from the file correctly ");
+            }
+            if (!checkBagContents(p.get(17), bag)){
+                throw new WrongAnswer("Your program does not read tiles distribution correctly.");
+            }
+
+            if (!p.get(18).toLowerCase().contains("What would you like to do?".toLowerCase())){
+                throw new WrongAnswer("Wrong menu title ");
+            }
+
+            if (!p.get(19).toLowerCase().contains("A. Place".toLowerCase())){
+                throw new WrongAnswer("Wrong menu option: Menu 'A' is not correct");
+            }
+
+            if (!p.get(20).toLowerCase().contains("B. Pick".toLowerCase())){
+                throw new WrongAnswer("Wrong menu option: Menu 'B' is not correct");
+            }
+
+            if (!p.get(21).toLowerCase().contains("C. Exit".toLowerCase())){
+                throw new WrongAnswer("Wrong menu option: Menu 'C' is not correct");
+            }
+            initialiseBoard();
+            //Check board if properly initialised
+            for (int i = 1; i < 16; i++) {
+                if(!getEmptyBoardLine(i).equals(p.get(i+1))){
+                    throw new WrongAnswer("Line "+(i+1)+" of your board is not displaying correctly. Your program output is '"+p.get(i+1)+"' expected: '"+getEmptyBoardLine(i)+"'");
+                }
+            }
+
+            //Test empty tray
+            testPlaceWithEmptyTrayMenu(pr);
+            //Test pick
+            testPickMenu("b",pr,bags);
+            testPickMenu("B",pr,bags);
+
+
+
+            //Test Invalid Place command
+            testInvalidPlaceMenu("a",pr);
+            testInvalidPlaceMenu("A",pr);
+            testInvalidPlaceMenu("Place",pr);
+            //Invalid commands
+            invalidCommand("E",pr);
+            invalidCommand("B pick",pr);
+
+            invalidCommand("E",pr);
+            invalidCommand("B pick",pr);
+
+            return CheckResult.correct();
+        }
+
+        private boolean checkBagContents(String bag1, String bag2) {
+            int[] charCount1 = new int[27];
+            int[] charCount2 = new int[27];
+
+            String contents1 = bag1.toUpperCase().replace(" ", "").replace("BAG:", "");
+            String contents2 = bag2.toUpperCase().replace(" ", "").replace("BAG:", "");
+
+            for (int i=0; i < contents1.length(); i++){
+                char c = contents1.charAt(i);
+                if (c == '*'){
+                    charCount1[26]++;
+                    continue;
+                }
+                charCount1[(c-'A')]++;
+            }
+
+            for (int i=0; i < contents2.length(); i++){
+                char c = contents2.charAt(i);
+                if (c == '*'){
+                    charCount2[26]++;
+                    continue;
+                }
+                charCount2[(c-'A')]++;
+            }
+
+            for (int i=0; i < charCount1.length; i++){
+                if (charCount1[i] != charCount2[i]){
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // validate command case
+        Object[][] validCommandCaseArray =  {
+                {"A"},
+                {"B"},
+                {"C"},
+                {"a"},
+                {"b"},
+                {"c"},
+                {"pick"},
+                {"pIcK"},
+                {"PLACE"},
+                {"pLAce"},
+                {"PICK"}
+        };
+        @DynamicTest(data = "validCommandCaseArray")
+        CheckResult test2( String message) {
+            String bag ="AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ**";
+            tray ="";
+            bags.add(bag);
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            testValidCommandCase(message,pr2);
+            return CheckResult.correct();
+        }
+        Object[][] exitArray =  {
+                {"c"},
+                {"exIt"},
+                {"C"}
+        };
+
+        @DynamicTest(data = "exitArray")
+        CheckResult test4( String message) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            testExitMenu(message,pr2);
+            return CheckResult.correct();
+        }
+        Object[][] pickArray =  {
+                {"b"},
+                {"pick"},
+                {"picK"},
+                {"B"}
+        };
+        @DynamicTest(data = "pickArray")
+        CheckResult test6( String message) {
+            String bag ="AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ**";
+            tray ="";
+            bags.add(bag);
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            testPickMenu(message,pr2,bags);
+            return CheckResult.correct();
+        }
+        Object[][] invalidPlaceArray =  {
+                {"a"},
+                {"a MAN"},
+                {"place WAC"},
+                {"place WAC 1 2 "},
+                /*{"place WAC 10 2 A"},
+                {"place WAC 10 10 A"},
+                {"place WAC A 10 A"},*/
+                {"place WAC Across 2 A"},
+                {"place WAC Across Down 1"},
+                {"place WAC Across Down 1 err rere"},
+                {"place WAC, 1, 2, 1"},
+                {"place WAC, 1, 2, A"},
+                {"place 'WAC', 1, 2, A"},
+                {"place \"WAC\", 1, 2, 1"},
+                {"place \"WAC\", 1, 2, D"},
+                {"place 'WAC', 1, 2, 1"},
+                {"a Man 1"}
+        };
+        @DynamicTest(data = "invalidPlaceArray")
+        CheckResult test5( String message) {
+            String bag ="AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ**";
+            tray ="DSCBLWORRBAOSE";
+            bags.add(bag);
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            pr2.execute("b");
+            testInvalidPlaceMenu(message,pr2);
+            return CheckResult.correct();
+        }
+        Object[][] placeInvalidLetterArray =  {
+                {"Place CROSSWOR1 4 3 ACR"},
+                {"Place @ 4 3 ACR"},
+                {"Place 1 4 3 ACR"}
+        };
+
+        @DynamicTest(data = "placeInvalidLetterArray")
+        CheckResult test10( String message) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            pr2.execute("b");
+            testPlaceInvalidCharacterMenu(message,pr2);
+            return CheckResult.correct();
+        }
+        Object[][] placeInvalidDirectionArray =  {
+                {"Place CROSSWOR1 4 3 AS"},
+                {"Place @ 4 3 ACRRoSS"},
+                {"Place @ 4 3 1"},
+                {"Place A 4 3 A"},
+                {"Place A 4 3 D"},
+                {"Place @ 4 3 +"},
+                {"Place 1 4 3 downs"}
+        };
+
+        @DynamicTest(data = "placeInvalidDirectionArray")
+        CheckResult test11( String message) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            pr2.execute("b");
+            testPlaceInvalidDirectionMenu(message,pr2);
+            return CheckResult.correct();
+        }
+        Object[][] placeInvalidPositionArray =  {
+                {"Place CROSSWORD 40 3 ACR"},
+                {"Place CROSSWORD 4 30 ACR"},
+                {"Place CROSSWORD 12 13 ACR"},
+                {"Place CROSSWORD -4 3 ACR"},
+                {"Place CROSSWORD 4 -3 ACR"},
+                {"Place CROSSWORD -1 3 ACR"},
+                {"Place CROSSWORD 4 -1 ACR"},
+                {"Place CROSSWORD 4 -1 ACR"},
+                {"Place CROSSWORD 16 15 down"},
+                {"Place CROSSWORD 0 15 down"},
+                {"Place CROSSWORD 1 11 down"},
+                {"Place CROSSWORD 11 1 down"},
+                {"Place CROSSWORD 15 0 down"},
+                {"Place CROSSWORD 4 0 down"},
+                {"Place CROSSWORD 15 16 down"},
+                {"Place CROSSWORD 16 15 down"},
+                {"Place C 0 0 down"}
+        };
+
+        @DynamicTest(data = "placeInvalidPositionArray")
+        CheckResult test12( String message) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            pr2.execute("b");
+            testPlacePositionOutOfRangeMenu(message,pr2);
+            return CheckResult.correct();
+        }
+        Object[][] placeNoneHexPositionArray =  {
+                {"Place CROSSWORD g 3 ACR"},
+                {"Place CROSSWORD 4 g ACR"},
+                {"Place CROSSWORD g g ACR"},
+                {"Place C y y down"}
+        };
+
+        @DynamicTest(data = "placeNoneHexPositionArray")
+        CheckResult test13( String message) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            pr2.execute("b");
+            checkPlacePositionNotHexResponse(message,pr2);
+            return CheckResult.correct();
+        }
+        //DSCBLWORRBAOSE
+        Object[][] placeWrongWordArray =  {
+                {"Place CRwOSWORD 4 3 ACR"},
+                {"Place CRORSWORD 4 3 ACR"},
+                {"Place CROSSWORL 4 3 ACR"},
+                {"Place CRwOSSWOD 4 3 ACR"},
+                {"Place CROSSWORW 4 3 ACR"},
+                {"Place CROSSWORS 4 3 ACR"},
+                {"Place C 4 3 down"}
+        };
+
+        @DynamicTest(data = "placeWrongWordArray")
+        CheckResult test14( String message) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            pr2.execute("b");
+            testPlaceInvalidWordMenu(message,pr2);
+            return CheckResult.correct();
+        }
+        //DSCBLWORRBAOSE
+        Object[][] placeLongWordArray =  {
+                {"Place CROSSWORDE 4 3 ACR"},
+                {"Place CRwOSSWORD 4 3 ACR"},
+                {"Place RCROSSWORD 4 3 ACR"},
+                {"Place CROSSWORDL 2 a DWN"},
+                {"Place CRwOSSWODLL 2 A DWN"},
+                {"Place CROSSWORLL 2 A DWN"},
+                {"Place CROSSWORALORAS 2 A DWN"},
+                {"Place CROSSWORALORASC 2 A DWN"},
+                {"Place CROSSWORALORASCA 2 A DWN"},
+                {"Place CROSSWORALORASCAR 2 A DWN"},
+                {"Place CROSSWORALORASCARBLOB 2 A DWN"}
+        };
+
+        @DynamicTest(data = "placeLongWordArray")
+        CheckResult test15( String message) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            pr2.execute("b");
+            testPlaceLongWordMenu(message,pr2);
+            return CheckResult.correct();
+        }
+
+        @DynamicTest
+        CheckResult test16() {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            pr2.execute("b");
+            pr2.execute("Place CROSSWORD 4 3 ACR");
+            pr2.execute("Place SCRABBLE 2 A DWN");
+            testWholeBoardMenu(pr2);
+            return CheckResult.correct();
+        }
+        @DynamicTest
+        CheckResult test17() {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start("./src/scrabbleTilesDistribution.txt");
+            pr2.execute("b");
+            pr2.execute("Place CROSSWORD 4 3 ACROSS");
+            pr2.execute("Place SCRABBLE 2 A DoWN");
+            testWholeBoardMenu(pr2);
+            return CheckResult.correct();
+        }
+        private void testPlaceInvalidDirectionMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlaceInvalidDirectionResponse(input, pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testPlacePositionOutOfRangeMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlacePositionOutOfRangeResponse(input, pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testWholeBoardMenu(TestedProgram pr){
+            if(!pr.isFinished()){
+                checkWholeBoardResponse();
+                throw new TestPassed();
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testPlaceInvalidCharacterMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlaceInvalidCharacterResponse(input, pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testPlaceInvalidWordMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlaceInvalidWordResponse(input, pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testPlaceLongWordMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlaceLongWordResponse(input, pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testInvalidPlaceMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkInvalidPlaceResponse(pr.execute(input));
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testValidCommandCase(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkValidCommandResponse(input, pr.execute(input));
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+
+        private void testPlaceWithEmptyTrayMenu(TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlaceWithEmptyTrayResponse(pr.execute("A"));
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testPickMenu(String input, TestedProgram pr, List<String> previousBags){
+            if(!pr.isFinished()){
+                checkPickResponse(input, pr, previousBags);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testExitMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                String output = pr.execute(input);
+                if(output.toLowerCase().contains("Invalid Command.".toLowerCase())){
+                    throw new WrongAnswer("'" +input+ "' is a valid command");
+                } else if(!output.trim().equals("Bye.")||!pr.isFinished()){
+                    throw new WrongAnswer("Your program should print 'Bye.' and terminate.");
+                }
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private static void invalidCommand(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                if(!pr.execute(input).toLowerCase().contains("Invalid command".toLowerCase())){
+                    throw new WrongAnswer("Your program should not accept invalid commands.'" +input+ "' is not a valid command");
+                }
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private  static void initialiseBoard(){
+            for(int i=0;i<15;i++) {
+                for (int j = 0; j < 15; j++) {
+                    board[i][j] = "#";
+                    correctBoard[i][j] = "#";
+                }
+            }
+            acrossBlank("CROSSWORD","4 3","ACROSS");
+            acrossBlank("SCRABBLE","2 10","DOWN");
+        }
+
+        private static void acrossBlank(String word, String pos,String direction){
+            String[] p =pos.split(" ");
+            int row= Integer.parseInt(p[0]) - 1;
+            int col= Integer.parseInt(p[1]) - 1;
+            for (int i = 0; i < word.length(); i++) {
+                if(direction.equals("ACROSS")||direction.equals("ACR")){
+                    board[row][col+i]=" ";
+                    correctBoard[row][col+i] = ""+word.charAt(i);
+                }else if(direction.equals("DOWN")||direction.equals("DWN")){
+                    board[row+i][col]=" ";
+                    correctBoard[row+i][col] = ""+word.charAt(i);
+                }
+            }
+        }
+        private String getEmptyBoardLine(int line){
+            if (line == 0) {
+                return "  1 2 3 4 5 6 7 8 9 A B C D E F";
+            }
+            StringBuilder n = new StringBuilder("" + Integer.toHexString(line).toUpperCase());
+            for (int j = 0; j < 15; j++) {
+                n.append(" ").append(board[line - 1][j]);
+            }
+            return n.toString();
+        }
+        private void checkPlaceWithEmptyTrayResponse(String output){
+            String[] p1 = output.trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            checkOutputLength(p, 16);
+            if(!p.get(16).toLowerCase().contains("Your tray is empty".toLowerCase())){
+                throw new WrongAnswer("Your program should display 'Your tray is empty.'");
+            }
+        }
+
+        private void checkOutputLength(ArrayList<String> p, int maxIndexAccessed) {
+            if (p.size() < maxIndexAccessed + 1){
+                throw new WrongAnswer("Your output was shorter than expected. At least " + (maxIndexAccessed+1) +
+                        " non-blank lines expected, but only " + p.size() + " found.");
+            }
+        }
+
+        private void checkValidCommandResponse(String input, String output){
+            if(output.toLowerCase().contains("Invalid command".toLowerCase())){
+                throw new WrongAnswer("Your program is rejecting valid commands '"+input+"'");
+            }
+        }
+        private void checkPlaceInvalidCharacterResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+
+            // Expected output is board, then error message line, then Tray, Bag, and the menu
+            if (p.size() != 23) {
+                throw new WrongAnswer("Wrong output in your program. " +
+                        "Your program should print draw a grid of 15 by 15 " +
+                        "with label the rows and columns from 1 to F " +
+                        "followed by an error message, Tray, Bag, and then the menu. '" );
+            }
+            if(!p.get(16).toLowerCase().contains("Invalid letter".toLowerCase())){
+                throw new WrongAnswer("Your program should display an error saying 'Invalid letter'.");
+            }
+        }
+        private void checkPlaceInvalidWordResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            checkOutputLength(p, 16);
+            if(!p.get(16).toLowerCase().contains("Incorrect word, please try again.".toLowerCase())){
+                throw new WrongAnswer("Your program allows placing an incorrect word. Display 'Incorrect word, please try again.'");
+            }
+        }
+        private void checkPlaceLongWordResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            checkOutputLength(p, 16);
+            if(!p.get(16).toLowerCase().contains("too long".toLowerCase())){
+                throw new WrongAnswer("Your program is not displaying the correct message. Display 'Incorrect word. The word is too long.'");
+            }
+        }
+        private void checkPlacePositionNotHexResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            checkOutputLength(p, 16);
+            if(!p.get(16).toLowerCase().contains("Invalid command".toLowerCase())){
+                throw new WrongAnswer("If the user enters a non-hexadecimal position, your program should display 'Invalid command. Use 'Place Word row(Hexadecimal) column(Hexadecimal) DIRECTION'.'");
+            }
+        }
+        private void checkWholeBoardResponse(){
+            for (int i = 0; i < ROW; i++) {
+                for (int j = 0; j < COL; j++) {
+                    if(!board[i][j].equals(correctBoard[i][j])&&!board[i][j].equals(" ")){
+                        throw new WrongAnswer("Your program should display 'Incorrect word, please try again.'"+board[i][j]+"="+correctBoard[i][j]);
+                    }
+                }
+            }
+
+
+        }
+        private void checkPlacePositionOutOfRangeResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            checkOutputLength(p, 16);
+            if(!p.get(16).toLowerCase().contains("Invalid position".toLowerCase())){
+                throw new WrongAnswer("Your program should display 'Invalid position. Position out of range.'");
+            }
+
+        }
+        private void checkPlaceInvalidDirectionResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            checkOutputLength(p, 16);
+            if(!p.get(16).toLowerCase().contains("Invalid direction".toLowerCase())){
+                throw new WrongAnswer("Your program should display 'Invalid direction.' when wrong direction are given.");
+            }
+
+        }
+        private void checkInvalidPlaceResponse(String output){
+            String[] p1 = output.trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+
+            try {
+                if(!p.get(16).toLowerCase().contains("Invalid command".toLowerCase())){
+                    throw new WrongAnswer("Your program should output 'Invalid command. Use 'Place Word row(Hexadecimal) column(Hexadecimal) DIRECTION.");
+                }
+            } catch (IndexOutOfBoundsException e) {
+                throw new WrongAnswer("Your program should output 'Invalid command. " +
+                        "Use 'Place Word row(Hexadecimal) column(Hexadecimal) DIRECTION'.");
+            }
+
+            if(tray.length()==0){
+                if(p.size() != 21){
+                    throw new WrongAnswer("Your output is incorrect. Print Bag: Followed by menu items each on a new line");
+                }
+                if (p.get(17).length()< 105){
+                    throw new WrongAnswer("Your have less tiles in the bag than expected ");
+                }
+                if (p.get(17).length() > 105){
+                    throw new WrongAnswer("Your have more tiles in the bag than expected ");
+                }
+            }else{
+                if(p.size() != 23){
+                    throw new WrongAnswer("Your program output is incorrect. Print Tray: Bag: Followed by menu items each on a new line");
+                }
+                if (p.get(18).length()+tray.length()< 105){
+                    throw new WrongAnswer("Your have less tiles in the bag than expected.");
+                }
+                if (p.get(18).length()+tray.length() > 105){
+                    throw new WrongAnswer("Your have more tiles in the bag than expected.");
+                }
+            }
+
+        }
+
+        private void checkPickResponse(String input, TestedProgram pr, List<String>  previousBags){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            checkOutputLength(p, 1);
+            if(p.get(0).toLowerCase().contains("Invalid Command.".toLowerCase())){
+                throw new WrongAnswer("'" +input+ "' is a valid command");
+            }
+            if(previousBags.size()!=0&&previousBags.get(previousBags.size()-1).length()==0){
+                if(p.size() != 7){
+                    throw new WrongAnswer("Your output is incorrect. Print 'No more tiles to pick.' Tray: Bag: Followed by menu items each on a new line");
+                }
+                if(!p.get(0).toLowerCase().contains("No more tiles to pick.".toLowerCase())){
+                    throw new WrongAnswer("Your program should print 'No more tiles to pick.'");
+                }
+                return;
+
+            }else if(p.size() != 22){
+                throw new WrongAnswer("Your output is incorrect. Print Tray: Bag: Followed by menu items each on a new line");
+            }
+            if (p.get(16).length()+ p.get(17).length()< 111){
+                throw new WrongAnswer("Your have less tiles than expected ");
+            }
+            if (p.get(16).length()+ p.get(17).length() > 111){
+                throw new WrongAnswer("Your have more tiles than expected ");
+            }
+            String bag = p.get(17).substring(5);
+            tray=p.get(16).substring(6);
+            if(tray.length()!=14&&bag.length()!=0){
+                throw new WrongAnswer("Your program is picking more or less than 14 tile. Only 14 tile should be picked.");
+            }
+            if(!tray.equalsIgnoreCase("DSCBLWORRBAOSE")){
+                throw new WrongAnswer("Your program is picking incorrect letters. It should pick letters 'DSCBLWORRBAOSE'.");
+            }
+            //tray="ere";
+            previousBags.add(bag);
+        }
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/projects/275/stages/1395/implement#comment
+status: Unchecked
+record: -1

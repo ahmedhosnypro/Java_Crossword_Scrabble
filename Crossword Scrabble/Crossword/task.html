@@ -1,0 +1,208 @@
+<div class="step-text">
+<h5 id="description">Description</h5>
+<p>A crossword puzzle consists of a square grid and blanks where crossword fans write letters vertically and horizontally. </p>
+<p>In this stage, draw a grid of <code class="language-python">15</code> by <code class="language-python">15</code> and fill each cell with <code class="language-python">#</code>. Starting from the tile <code class="language-python">4-3</code>  (ROW-COL) clear space for the word <code class="language-python">CROSSWORD</code> across and <code class="language-python">SCRABBLE</code> from <code class="language-python">2-A</code> down.</p>
+<h5 id="objectives">Objectives</h5>
+<ul>
+<li>Draw a grid of <code class="language-python">15</code> by <code class="language-python">15</code> and fill each cell with <code class="language-python">#</code> except for cells saved for <code class="language-python">CROSSWORD</code> and <code class="language-python">SCRABBLE</code> (see Examples);</li>
+<li>Label the rows and columns from <code class="language-python">1</code> to <code class="language-python">F</code>;</li>
+<li>Change the menu so that it includes the following items:  <code class="language-python">A. Place B. Pick C. Exit</code></li>
+<li>Allow the user to place  <code class="language-python">CROSSWORD</code> and <code class="language-python">SCRABBLE</code> in the available spaces. Do this by first letting them pick the letters <code class="language-python">DSCBLWORRBAOSE</code> from the bag (for this stage, only those letters should be picked - not random letters and not just 7 at a time) with the <code class="language-python">Pick</code> command and then place the words with the <code class="language-python">Place</code> command.</li>
+<li>Write code to choose the above letters from the bag and put them in the user's tray.  To add the words, write <code class="language-python">Place CROSSWORD 4 3 ACR</code> and<code class="language-python">Place SCRABBLE 2 A DWN</code>. <code class="language-python">ACR</code> denotes "across" and <code class="language-python">DWN</code> denotes "down"; Letter selection should be case-insensitive. Once placed on the board, all letters should be shown as uppercase.</li>
+<li>If users select the <code class="language-python">Place</code> command with an empty tray, print <code class="language-python">Your tray is empty.</code></li>
+<li>If the user places a letter that's not in the tray (case-insensitive), display <code class="language-python">Invalid letter. Letter X is not in the tray.</code></li>
+<li>If the user tries to place at an invalid position (cannot be parsed as hexadecimal), print <code class="language-python">Invalid command. Use 'Place Word row(Hexadecimal) column(Hexadecimal) DIRECTION'.</code></li>
+<li>If the <code class="language-python">Place</code> command points to a cell with <code class="language-python"><samp>#</samp></code> or an out-of-range cell (&lt;<code class="language-python">1</code> or &gt;<code class="language-python">F</code>), display <code class="language-python">Invalid position. Position out of range.</code> If the direction is not <code class="language-python">ACR</code>/<code class="language-python">ACROSS</code> or <code class="language-python">DWN</code>/<code class="language-python">DOWN</code>, print <code class="language-python">Invalid direction.</code> You should check for valid position before validating direction.</li>
+<li>If the placed word is not correct, print <code class="language-python">Incorrect word, please try again.</code></li>
+<li>If the user attempts to place a word too long to fit in the available space at their specified position, display  <code class="language-python">Incorrect word. The word is too long.</code></li>
+<li>For any 'invalid' error message, the message should appear after the board is reprinted, before the tray/bag lines. (ie., the 17th line of output)</li>
+</ul>
+<h5 id="example">Example</h5>
+<p>The greater-than symbol followed by a space (<code class="language-python">&gt; </code>) represents the user input. Note that it's not part of the input.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code class="language-python">Welcome to Crossword Scrabble
+
+   1 2 3 4 5 6 7 8 9 A B C D E F
+
+ 1 # # # # # # # # # # # # # # #
+
+ 2 # # # # # # # # #   # # # # #
+
+ 3 # # # # # # # # #   # # # # #
+
+ 4 # #                   # # # #
+
+ 5 # # # # # # # # #   # # # # #
+
+ 6 # # # # # # # # #   # # # # #
+
+ 7 # # # # # # # # #   # # # # #
+
+ 8 # # # # # # # # #   # # # # #
+
+ 9 # # # # # # # # #   # # # # #
+
+ A # # # # # # # # # # # # # # #
+
+ B # # # # # # # # # # # # # # #
+
+ C # # # # # # # # # # # # # # #
+
+ D # # # # # # # # # # # # # # #
+
+ E # # # # # # # # # # # # # # #
+
+ F # # # # # # # # # # # # # # #
+
+Bag: AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ
+
+What would you like to do?
+
+A. Place
+
+B. Pick
+
+C. Exit
+
+&gt; Pick
+
+   1 2 3 4 5 6 7 8 9 A B C D E F
+
+ 1 # # # # # # # # # # # # # # #
+
+ 2 # # # # # # # # #   # # # # #
+
+ 3 # # # # # # # # #   # # # # #
+
+ 4 # #                   # # # #
+
+ 5 # # # # # # # # #   # # # # #
+
+ 6 # # # # # # # # #   # # # # #
+
+ 7 # # # # # # # # #   # # # # #
+
+ 8 # # # # # # # # #   # # # # #
+
+ 9 # # # # # # # # #   # # # # #
+
+ A # # # # # # # # # # # # # # #
+
+ B # # # # # # # # # # # # # # #
+
+ C # # # # # # # # # # # # # # #
+
+ D # # # # # # # # # # # # # # #
+
+ E # # # # # # # # # # # # # # #
+
+ F # # # # # # # # # # # # # # #
+
+Tray: LABOSEWRAOBDCRS
+
+Bag: AAAAAAACDDDEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLMMNNNNNNOOOOOOPPQRRRRSSTTTTTTUUUUVVWXYYZ
+
+What would you like to do?
+
+A. Place
+
+B. Pick
+
+C. Exit
+
+&gt;Place CROSSWORD 4 3 ACR
+
+   1 2 3 4 5 6 7 8 9 A B C D E F
+
+ 1 # # # # # # # # # # # # # # #
+
+ 2 # # # # # # # # #   # # # # #
+
+ 3 # # # # # # # # #   # # # # #
+
+ 4 # # C R O S S W O R D # # # #
+
+ 5 # # # # # # # # #   # # # # #
+
+ 6 # # # # # # # # #   # # # # #
+
+ 7 # # # # # # # # #   # # # # #
+
+ 8 # # # # # # # # #   # # # # #
+
+ 9 # # # # # # # # #   # # # # #
+
+ A # # # # # # # # # # # # # # #
+
+ B # # # # # # # # # # # # # # #
+
+ C # # # # # # # # # # # # # # #
+
+ D # # # # # # # # # # # # # # #
+
+ E # # # # # # # # # # # # # # #
+
+ F # # # # # # # # # # # # # # #
+
+Tray: LABOSEWRAOBDCRS
+
+Bag: AAAAAAACDDDEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLMMNNNNNNOOOOOOPPQRRRRSSTTTTTTUUUUVVWXYYZ
+
+What would you like to do?
+
+A. Place
+
+B. Pick
+
+C. Exit
+
+&gt;A SCRABBLE 2 A DWN
+
+   1 2 3 4 5 6 7 8 9 A B C D E F
+
+ 1 # # # # # # # # # # # # # # #
+
+ 2 # # # # # # # # # S # # # # #
+
+ 3 # # # # # # # # # C # # # # #
+
+ 4 # # C R O S S W O R D # # # #
+
+ 5 # # # # # # # # # A # # # # #
+
+ 6 # # # # # # # # # B # # # # #
+
+ 7 # # # # # # # # # B # # # # #
+
+ 8 # # # # # # # # # L # # # # #
+
+ 9 # # # # # # # # # E # # # # #
+
+ A # # # # # # # # # # # # # # #
+
+ B # # # # # # # # # # # # # # #
+
+ C # # # # # # # # # # # # # # #
+
+ D # # # # # # # # # # # # # # #
+
+ E # # # # # # # # # # # # # # #
+
+ F # # # # # # # # # # # # # # #
+
+Tray: LABOSEWRAOBDCRS
+
+Bag: AAAAAAACDDDEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLMMNNNNNNOOOOOOPPQRRRRSSTTTTTTUUUUVVWXYYZ
+
+What would you like to do?
+
+A. Place
+
+B. Pick
+
+C. Exit
+
+&gt;Exit
+
+Bye.</code></pre>
+</div>

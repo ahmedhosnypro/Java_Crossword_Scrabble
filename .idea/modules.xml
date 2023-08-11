@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Crossword_Scrabble.iml" filepath="$PROJECT_DIR$/.idea/modules/Crossword_Scrabble.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Crossword Scrabble/task/Crossword_Scrabble.Crossword_Scrabble-task.iml" filepath="$PROJECT_DIR$/.idea/modules/Crossword Scrabble/task/Crossword_Scrabble.Crossword_Scrabble-task.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Crossword Scrabble/task/Crossword_Scrabble.Crossword_Scrabble-task.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Crossword Scrabble/task/Crossword_Scrabble.Crossword_Scrabble-task.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Crossword Scrabble/task/Crossword_Scrabble.Crossword_Scrabble-task.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Crossword Scrabble/task/Crossword_Scrabble.Crossword_Scrabble-task.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/util/Crossword_Scrabble.util.iml" filepath="$PROJECT_DIR$/.idea/modules/util/Crossword_Scrabble.util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/util/Crossword_Scrabble.util.main.iml" filepath="$PROJECT_DIR$/.idea/modules/util/Crossword_Scrabble.util.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/util/Crossword_Scrabble.util.test.iml" filepath="$PROJECT_DIR$/.idea/modules/util/Crossword_Scrabble.util.test.iml" />
+    </modules>
+  </component>
+</project>

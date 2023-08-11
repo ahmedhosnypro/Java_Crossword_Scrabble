@@ -1,0 +1,170 @@
+<div class="step-text">
+<h5 id="description">Description</h5>
+<p>Let's blend everything you've done in the previous stages into a user-friendly game!</p>
+<p>Add a menu to the game with <code class="language-json">Place</code>, <code class="language-json">Hint</code>, <code class="language-json">New Puzzle</code>, and <code class="language-json">Exit</code> options. </p>
+<p>Pass the file name for the crossword scrabble as a command-line argument — for example, <em>crosswordScrabble.txt</em></p>
+<h5 id="objectives">Objectives</h5>
+<ul>
+<li>Read the JSON file that contains a list of puzzle objects with an example as shown below:</li>
+</ul>
+<pre><code class="language-json">{"letter": "LFALYPU",
+
+"words":[
+
+   {"word":"Playful","position":"6,5","direction":"Acr","hint":"fond of games and amusement"},
+
+   {"word":"fall","position":"2,3","direction":"Acr","hint":"Move from a higher to a lower level, typically rapidly and without control"},...
+
+]
+
+}</code></pre>
+<ul>
+<li>At the start, get a random object and fill the crossword grid cell with blank space where user input from the user is expected. On the <code class="language-json">New Puzzle</code> command, read another puzzle randomly and display a space where users need to fill it.</li>
+<li>The <code class="language-json">Place</code> command fills in a word in the crossword, for example — <code class="language-json">Place fall 2 3 ACR</code>.  If the word is longer than the available space, print <code class="language-json">Incorrect word. The word is too long.</code> If the word is shorter, print <code class="language-json">The word is shorter than expected.</code> If the word is not correct, print <code class="language-json">Wrong word, please try again.</code> and display the hint on the following line;</li>
+<li>The <code class="language-json">hint</code> command describes the expected word. It takes the row and column position of the word as the starting position and the direction — <code class="language-json">hint 2 3 ACR</code>; </li>
+<li>For direction and/or position parameters — if the position is out of range or the direction is invalid, print <code class="language-json">Invalid position or direction.</code></li>
+<li>When the puzzle is solved, print <code class="language-json">Congratulations! Would you like to load another puzzle? Yes/No.</code> If <code class="language-json">Yes</code>, load another puzzle. If <code class="language-json">No</code>, terminate the application.</li>
+</ul>
+<h5 id="example">Example</h5>
+<p>The greater-than symbol followed by a space (<code class="language-json">&gt; </code>) represents the user input. Note that it's not part of the input.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code class="language-python">Welcome to Crossword Scrabble
+
+   1 2 3 4 5 6 7 8 9 A B C D E F
+
+ 1 # # # # # # # # # #   # # # #
+
+ 2 # #         # # # #   # # # #
+
+ 3 # #   #   # # # # #   # # # #
+
+ 4 # #       # # # # #       # #
+
+ 5 # # # #   # # # # #   # # # #
+
+ 6 # # # #               # # # #
+
+ 7 # # # # # # # #   # # # # # #
+
+ 8 # # # # # # # #   # # # # # #
+
+ 9 # # # # # # # #   # # # # # #
+
+ A # # # # # # #         # # # #
+
+ B # # # # # # # # # # # # # # #
+
+ C # # # # # # # # # # # # # # #
+
+ D # # # # # # # # # # # # # # #
+
+ E # # # # # # # # # # # # # # #
+
+ F # # # # # # # # # # # # # # #
+
+Tray:LFALYPU
+
+What would you like to do?
+
+A. Place
+
+B. Hint
+
+C. New Puzzle
+
+D. Exit
+
+&gt; Hint 2 3 DWN
+
+Move from a higher to a lower level, typically rapidly and without control
+
+     1 2 3 4 5 6 7 8 9 A B C D E F
+
+ 1 # # # # # # # # # #   # # # #
+
+ 2 # #         # # # #   # # # #
+
+ 3 # #   #   # # # # #   # # # #
+
+ 4 # #       # # # # #       # #
+
+ 5 # # # #   # # # # #   # # # #
+
+ 6 # # # #               # # # #
+
+ 7 # # # # # # # #   # # # # # #
+
+ 8 # # # # # # # #   # # # # # #
+
+ 9 # # # # # # # #   # # # # # #
+
+ A # # # # # # #         # # # #
+
+ B # # # # # # # # # # # # # # #
+
+ C # # # # # # # # # # # # # # #
+
+ D # # # # # # # # # # # # # # #
+
+ E # # # # # # # # # # # # # # #
+
+ F # # # # # # # # # # # # # # #
+
+Tray:LFALYPU
+
+What would you like to do?
+
+A. Place
+
+B. Hint
+
+C. New Puzzle
+
+D. Exit
+
+&gt; Place PLAYFUL 6 5 ACR
+
+   1 2 3 4 5 6 7 8 9 A B C D E F
+
+ 1 # # # # # # # # # #   # # # #
+
+ 2 # #         # # # #   # # # #
+
+ 3 # #   #   # # # # #   # # # #
+
+ 4 # #       # # # # #       # #
+
+ 5 # # # #   # # # # #   # # # #
+
+ 6 # # # # P L A Y F U L # # # #
+
+ 7 # # # # # # # #   # # # # # #
+
+ 8 # # # # # # # #   # # # # # #
+
+ 9 # # # # # # # #   # # # # # #
+
+ A # # # # # # #         # # # #
+
+ B # # # # # # # # # # # # # # #
+
+ C # # # # # # # # # # # # # # #
+
+ D # # # # # # # # # # # # # # #
+
+ E # # # # # # # # # # # # # # #
+
+ F # # # # # # # # # # # # # # #
+
+Tray:LFALYPU
+
+What would you like to do?
+
+A. Place
+
+B. Hint
+
+C. New Puzzle
+
+D. Exit</code></pre>
+</div>

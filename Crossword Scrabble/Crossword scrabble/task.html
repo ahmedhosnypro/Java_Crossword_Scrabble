@@ -1,0 +1,100 @@
+<div class="step-text">
+<h5 id="description">Description</h5>
+<p>In Scrabble, you can have 35,000 letter combinations (words) with just seven letters. To limit this range, use the power of the crossword. From the provided file, read a random line that consists of seven letters, followed by words to form and their positions, and <code class="language-python">ACR</code> or <code class="language-python">DWN</code> representing the direction.</p>
+<p>For a random line, fill the cell in the crossword with letters as described in the line. The file name for the crossword scrabble file should be passed as a command-line argument — for example, <em>crosswordPuzzle.txt</em></p>
+<h5 id="objectives">Objectives</h5>
+<ul>
+<li>Read one random line from the file and display the content of the line on the crossword grid every time users select the <code class="language-python">Shuffle</code> command. Don't display the same line twice.</li>
+<li>If <code class="language-python">Shuffle</code> is executed, and there are no lines to choose from, print <code class="language-python">No more puzzles. Bye.</code> and terminate the application.</li>
+</ul>
+<p>The file format is as follows - note that in the file, unlike the Place command, the coordinates of words are given in decimal format, not hexadecimal:</p>
+<pre><code class="language-no-highlight">IDOETIN edition 5 7 ACR iodine 9 7 ACR noted 10 3 ACR ident 10 12 ACR end 7 10 ACR Tenioid 4 7 DWN
+
+nefisdr fined 4 9 ACR fern 8 6 ACR serif 10 9 ACR Friends 4 9 DWN</code></pre>
+<h5 id="example">Example</h5>
+<p>The greater-than symbol followed by a space (<code class="language-python">&gt; </code>) represents the user input. Note that it's not part of the input.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code class="language-python">Welcome to Crossword Scrabble
+
+   1 2 3 4 5 6 7 8 9 A B C D E F
+
+ 1 # # # # # # # # # # L # # # #
+
+ 2 # # F A L L # # # # A # # # #
+
+ 3 # # A # A # # # # # P # # # #
+
+ 4 # # P L Y # # # # # F A Y # #
+
+ 5 # # # # U # # # # # U # # # #
+
+ 6 # # # # P L A Y F U L # # # #
+
+ 7 # # # # # # # # U # # # # # #
+
+ 8 # # # # # # # # L # # # # # #
+
+ 9 # # # # # # # # L # # # # # #
+
+ A # # # # # # # A Y L L # # # #
+
+ B # # # # # # # # # # # # # # #
+
+ C # # # # # # # # # # # # # # #
+
+ D # # # # # # # # # # # # # # #
+
+ E # # # # # # # # # # # # # # #
+
+ F # # # # # # # # # # # # # # #
+
+Tray:LFALYPU
+
+What would you like to do?
+
+A. Shuffle
+
+B. Exit
+
+&gt; Shuffle
+
+   1 2 3 4 5 6 7 8 9 A B C D E F
+
+ 1 # # # # # # # # # # # # # # #
+
+ 2 # # # # # # # # # # # # # # #
+
+ 3 # # # # # # # I # # # # # # #
+
+ 4 # # # # # # # D O N E # # # #
+
+ 5 # # # # # # # I # # # # # # #
+
+ 6 # # # # # # # O # # # # # # #
+
+ 7 # # # # E D I T I O N # # # #
+
+ 8 # # # # # # O # D # # # # # #
+
+ 9 # # # # # # D # E # # # # # #
+
+ A # # # # # # I # N # # # # # #
+
+ B # # # # # # N O T E D # # # #
+
+ C # # # # # # E # # # # # # # #
+
+ D # # # # # # # # # # # # # # #
+
+ E # # # # # # # # # # # # # # #
+
+ F # # # # # # # # # # # # # # #
+
+Tray:NTIODEI
+
+What would you like to do?
+
+A. Shuffle
+
+B. Exit</code></pre>
+</div>

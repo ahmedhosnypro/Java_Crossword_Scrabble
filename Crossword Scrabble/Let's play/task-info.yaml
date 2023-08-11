@@ -1,0 +1,890 @@
+type: edu
+files:
+- name: src/crossword/Main.java
+  visible: true
+  text: |-
+    package crossword;
+
+    public class Main {
+        public static void main(String[] args) {
+            System.out.println("Hello World!");
+        }
+    }
+  learner_created: false
+- name: src/crosswordScrabble.json
+  visible: true
+  learner_created: false
+- name: src/crosswordScrabble.txt
+  visible: true
+  text: |-
+    eaMgria Maria 4 9 ACR Grama 7 5 ACR Marriage 9 2 ACR Grime 11 2 ACR Mega 9 2 DWN Imager 4 5 DWN Mirage 4 9 DWN
+    Playfull Play 4 10 ACR Lapful 7 5 ACR Fully 10 3 ACR Layup 13 7 ACR Pull 4 10 DWN Playful 7 7 DWN Yap 11 11 DWN Flu 10 3 DWN
+    Edition Edition 5 7 ACR Iodine 9 7 ACR Noted 10 3 ACR ident 12 5 ACR End 7 10 ACR Tenioid 4 7 DWN Dent 9 9 DWN die 7 12 DWN ion 5 11 DWN
+    Friends Fined 4 9 ACR Fern 8 6 ACR Serif 10 9 ACR Fed 8 6 DWN Friends 4 9 DWN Den 4 13 DWN Fired 10 13 DWN
+    Deliver Devil 3 4 ACR Liver 5 6 ACR Relieved 9 4 ACR reived 11 10 ACR Delied 3 4 DWN Lever 3 7 DWN Elder 9 5 DWN Derive 9 10 DWN
+    Sparrow Roars 6 4 ACR Pows 7 8 ACR Arrow 9 7 ACR raws 10 11 ACR warps 12 8 ACR swap 9 1 ACR Rasp 6 4 DWN wraps 9 11 DWN Sparrow 6 8 DWN
+    Dancing Acid 8 10 ACR Caning 10 10 ACR Cain 12 7 ACR Gain 11 8 DWN Dancing 7 10 DWN Nag 10 14 DWN
+    Futuresl Turf 4 9 ACR Future 7 4 ACR Fuse 12 5 ACR Rut 10 2 ACR Fret 7 4 DWN Left 4 6 DWN Uterus 7 7 DWN True 4 9 DWN
+    Sconced Second 3 9 ACR Once 5 9 ACR Conned 7 9 ACR Nodes 9 7 ACR Send 13 4 ACR Nosed 9 7 DWN sconced 3 9 DWN Cones 5 11 DWN
+    Lengthy Gent 6 12 ACR Lent 10 12 ACR then 8 9 ACR lengthy 11 6 ACR leg 11 6 DWN Gel 11 9 DWN Gently 6 12 DWN
+  learner_created: false
+- name: src/scrabbleTilesDistribution.txt
+  visible: true
+  text: |-
+    A 9
+    B 2
+    C 2
+    D 4
+    E 12
+    F 2
+    G 3
+    H 2
+    I 9
+    J 1
+    K 1
+    L 4
+    M 2
+    N 6
+    O 8
+    P 2
+    Q 1
+    R 6
+    S 4
+    T 6
+    U 4
+    V 2
+    W 2
+    X 1
+    Y 2
+    Z 1
+    * 2
+  learner_created: false
+- name: test/Stage5Test.java
+  visible: false
+  text: |-
+    import com.google.gson.Gson;
+    import org.hyperskill.hstest.dynamic.DynamicTest;
+    import org.hyperskill.hstest.exception.outcomes.WrongAnswer;
+    import org.hyperskill.hstest.stage.StageTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import org.hyperskill.hstest.testing.TestedProgram;
+
+    import java.io.File;
+    import java.io.FileNotFoundException;
+    import java.util.ArrayList;
+    import java.util.HashMap;
+    import java.util.Scanner;
+
+    public class Stage5Test  extends StageTest {
+        String tray ="";
+        static Puzzles puzzles;
+        static int ROW = 15;
+        static int COL = 15;
+        static HashMap<String, Word> words = new HashMap<>();
+        static String[][] board = new String[ROW][COL];
+        static String file = "./src/crosswordScrabble.json";
+        @DynamicTest
+        CheckResult beginningTest1() {
+            TestedProgram pr = new TestedProgram();
+            String output = pr.start(file);
+            String[] p1 = output.trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            puzzles = read();
+            ArrayList<String> p = new ArrayList<>();
+
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            if(p.size()<23){
+                throw new WrongAnswer("""
+                        Your output is not formatted correctly. It should be as follows:
+                        "Welcome to Crossword Scrabble
+                        Crossword Board
+                        Tray: 'tray content'
+                        Menu\"""");
+            }
+            if(!p.get(0).toLowerCase().trim().contains("Welcome to Crossword Scrabble".toLowerCase())){
+                throw new WrongAnswer("Your output should contain the game title " +
+                        "\"Welcome to Crossword Scrabble\"");
+            }
+            //Check Board
+            if (p.get(17).equalsIgnoreCase("tray: ") ){
+                throw new WrongAnswer("Your program should not print an empty tray.");
+            }
+            if (p.get(17).length()< 10){
+                throw new WrongAnswer("Your program generates less tiles than expected. Your program should read  the data from the file correctly");
+            }
+            if (!p.get(18).toLowerCase().contains("What would you like to do?".toLowerCase())){
+                throw new WrongAnswer("Wrong menu title ");
+            }
+
+            if (!p.get(19).toLowerCase().contains("A. Place".toLowerCase())){
+                throw new WrongAnswer("Wrong menu option: Menu 'A' is not correct");
+            }
+
+            if (!p.get(20).toLowerCase().contains("B. Hint".toLowerCase())){
+                throw new WrongAnswer("Wrong menu option: Menu 'B' is not correct");
+            }
+            if (!p.get(21).toLowerCase().contains("C. New Puzzle".toLowerCase())){
+                throw new WrongAnswer("Wrong menu option: Menu 'C' is not correct");
+            }
+            if (!p.get(22).toLowerCase().contains("D. Exit".toLowerCase())){
+                throw new WrongAnswer("Wrong menu option: Menu 'D' is not correct");
+            }
+             int t =0;
+
+
+
+            //Determine contents of the tray - should be on line 18 (index 17)
+            //String f = p.get(17).substring("tray: ".length());
+
+            String trayLine = null;
+            for (String s: p){
+                if (s.toUpperCase().strip().startsWith("TRAY:")){
+                    trayLine = s;
+                }
+            }
+
+            if (trayLine == null){
+                throw new WrongAnswer("Could not locate the current tray in your output. The line should start with 'Tray:'");
+            }
+
+            String f = trayLine.replace(" ", "").strip().substring("tray:".length());
+
+            for (int i = 0; i < puzzles.puzzles.size(); i++) {
+                if(puzzles.puzzles.get(i).letter.trim().toUpperCase().startsWith(f.trim().toUpperCase())){
+                    t=i;
+                    break;
+                }
+            }
+            tray = puzzles.puzzles.get(t).letter.toUpperCase();
+            words.clear();
+            for (int i = 0; i < (puzzles.puzzles.get(t).words.size()); i++) {
+                words.put(puzzles.puzzles.get(t).words.get(i).position+" "+puzzles.puzzles.get(t).words.get(i).direction,puzzles.puzzles.get(t).words.get(i));
+            }
+            initialiseBoard();
+            //Check board if properly initialised
+            for (int i = 1; i < 16; i++) {
+                if(!getEmptyBoardLine(i).equals(p.get(i+1))){
+                    throw new WrongAnswer("Line "+(i+1)+" of your board is not displaying correctly. Your program output is '"+p.get(i+1)+"' expected: '"+getEmptyBoardLine(i)+"'");
+                }
+            }
+
+            //Invalid place: wrong row col not Integer
+             testPlacePositionNotIntegerMenu("Place CROSSWORD g 3 ACR",pr);
+            testPlacePositionNotIntegerMenu("Place CROSSWORD 3 y ACR",pr);
+            testPlacePositionNotIntegerMenu("Place CROSSWORD p 1 ACR",pr);
+            testPlacePositionNotIntegerMenu("Place CROSSWORD 1 h ACR",pr);
+
+            //Invalid place: wrong Word, characters not on tray
+            //pr.execute("b");
+            for (String key:
+                 words.keySet()) {
+
+
+
+                String c=(words.get(key).word.charAt(0)+"$"+words.get(key).word.trim().substring(2)).trim();
+
+                //Change position to Hex
+                String[] v =key.split(" ");
+                String h= Integer.toHexString(Integer.parseInt(v[0]))+ " "+Integer.toHexString(Integer.parseInt(v[1]));
+                key = h +" "+v[2];// (key.endsWith("D")?" DWN":" ACR");
+
+                String r ="Place "+c+" "+key;
+                r= r.replace("  "," ");
+                testPlaceInvalidCharacterMenu(r,pr);
+            }
+            //Test Long entry
+            for (String key:
+                    words.keySet()) {
+                //Test Long entry
+                 String c=(words.get(key).word.trim()+words.get(key).word.trim().charAt(0)).trim();
+
+
+                //Change position to Hex
+                String[] v =key.split(" ");
+                String h= Integer.toHexString(Integer.parseInt(v[0]))+ " "+Integer.toHexString(Integer.parseInt(v[1]));
+                key = h + " "+v[2];//(key.endsWith("D")?" DWN":" ACR");
+                String r ="Place "+c+" "+key;
+                r= r.replace("  "," ");
+                testPlaceLongWordMenu(r,pr);
+            }
+
+            //Congratulations
+            for (String key:
+                    words.keySet()) {
+                String r ="Place "+words.get(key).word.trim()+" "+key.trim();
+                r= r.replace("  "," ");
+                testPlaceCorrectOrCongratulationMenu(r,pr);
+            }
+            //Test hint
+            for (String key:
+                    words.keySet()) {
+                //Change position to Hex
+                String[] v =key.split(" ");
+                String h= Integer.toHexString(Integer.parseInt(v[0]))+ " "+Integer.toHexString(Integer.parseInt(v[1]));
+                key = h + " "+v[2];//(key.endsWith("D")?" DWN":" ACR");
+                String r ="hint " +key;
+                r= r.replace("  "," ");
+                testHintMenu(r,pr);
+            }
+
+            //Invalid place: wrong direction
+            testPlaceInvalidDirectionMenu("Place CROSSWORD 4 3 AS",pr);
+            testPlaceInvalidDirectionMenu("Place CROSSWORD 4 3 1",pr);
+            invalidCommand("E",pr);
+            invalidCommand("B pick",pr);
+            return CheckResult.correct();
+        }
+        // validate command case
+        Object[][] validCommandCaseArray =  {
+                {"A wewe 2 2 acr"},
+                {"B 2 2 acr"},
+                {"hint 2 2 acr"},
+                {"a wewe 2 2 acr"},
+                {"b 2 2 acr"},
+                {" hint 2 2 acr"},
+                {"c"},
+                {"C"},
+                {"New Puzzle"},
+                {"place wewe 2 2 acr"},
+                {"PlAce wewe 2 2 acr"},
+                {"exit"},
+                {"eXIT"},
+                {"EXIT"}
+        };
+        @DynamicTest(data = "validCommandCaseArray")
+        CheckResult test2( String message) {
+            tray ="";
+            TestedProgram pr2 = new TestedProgram();
+            String output = pr2.start(file);
+
+            // Determine what letters are in the tray
+            int t =0;
+            ArrayList<String> p = new ArrayList<>();
+            String[] p1 = output.trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+
+            checkOutputLength(p, 17);
+
+            //Determine contents of the tray - should be on line 18 (index 17)
+            //String f = p.get(17).substring("tray: ".length());
+
+            String trayLine = null;
+            for (String s: p){
+                if (s.toUpperCase().strip().startsWith("TRAY:")){
+                    trayLine = s;
+                }
+            }
+
+            if (trayLine == null){
+                throw new WrongAnswer("Could not locate the current tray in your output. The line should start with 'Tray:'");
+            }
+
+            String f = trayLine.replace(" ", "").strip().substring("tray:".length());
+            for (int i = 0; i < puzzles.puzzles.size(); i++) {
+                if(puzzles.puzzles.get(i).letter.trim().toUpperCase().startsWith(f.trim().toUpperCase())){
+                    t=i;
+                    break;
+                }
+            }
+
+            tray = puzzles.puzzles.get(t).letter.toUpperCase();
+
+            // Valid choice of characters from the tray
+            String validLetterChoice = tray.substring(0, 1);
+
+            // Replace placeholder chars in command with valid letters
+            message = message.replace("wewe", validLetterChoice);
+
+            testValidCommandCase(message,pr2);
+            return CheckResult.correct();
+        }
+
+        private void checkOutputLength(ArrayList<String> p, int maxIndexAccessed) {
+            if (p.size() < maxIndexAccessed + 1){
+                throw new WrongAnswer("Your output was shorter than expected. At least " + (maxIndexAccessed+1) +
+                        " non-blank lines expected, but only " + p.size() + " found.");
+            }
+        }
+
+        Object[][] exitArray =  {
+                {"d"},
+                {"exIt"},
+                {" exIt"},
+                {"D"},
+                {" d "},
+                {" D"}
+        };
+
+        @DynamicTest(data = "exitArray")
+        CheckResult test4( String message) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start(file);
+            testExitMenu(message,pr2);
+            return CheckResult.correct();
+        }
+        @DynamicTest
+        CheckResult test5( ) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start(file);
+            testShuffleMenu("c",pr2);
+            testShuffleMenu("c",pr2);
+            testShuffleMenu("c",pr2);
+            testShuffleMenu("c",pr2);
+            testShuffleMenu("c",pr2);
+            testShuffleMenu("c",pr2);
+            testShuffleMenu("c",pr2);
+            testShuffleMenu("c",pr2);
+            testShuffleMenu("New Puzzle",pr2);
+            testNoMorePuzzle(pr2);
+            //testShuffleMenu("a",pr2);
+            //testShuffleMenu("a",pr2);
+            return CheckResult.correct();
+        }
+        //checkIfPlaceWorkingOk
+        @DynamicTest
+        CheckResult test6(){
+            TestedProgram pr2 = new TestedProgram();
+            String output = pr2.start(file);
+            int t =0;
+            ArrayList<String> p = new ArrayList<>();
+            String[] p1 = output.trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+
+            checkOutputLength(p, 17);
+
+            //Determine contents of the tray - should be on line 18 (index 17)
+            //String f = p.get(17).substring("tray: ".length());
+
+            String trayLine = null;
+            for (String s: p){
+                if (s.toUpperCase().strip().startsWith("TRAY:")){
+                    trayLine = s;
+                }
+            }
+
+            if (trayLine == null){
+                throw new WrongAnswer("Could not locate the current tray in your output. The line should start with 'Tray:'");
+            }
+
+            String f = trayLine.replace(" ", "").strip().substring("tray:".length());
+            for (int i = 0; i < puzzles.puzzles.size(); i++) {
+                if(puzzles.puzzles.get(i).letter.trim().toUpperCase().startsWith(f.trim().toUpperCase())){
+                    // data = puzzles.get(i).toUpperCase().split(" ");
+                    t=i;
+                    break;
+                }
+            }
+            // puzzles.remove(t);
+            tray = puzzles.puzzles.get(t).letter.toUpperCase();
+            words.clear();
+            for (int i = 0; i < (puzzles.puzzles.get(t).words.size()); i++) {
+                words.put(puzzles.puzzles.get(t).words.get(i).position+" "+puzzles.puzzles.get(t).words.get(i).direction,puzzles.puzzles.get(t).words.get(i));
+            }
+
+
+            initialiseBoard();
+
+            for (String key:
+                    words.keySet()) {
+                //testPlaceCorrectOrCongratulationMenu("Place "+words.get(key).word.trim()+" "+key.trim(),pr);
+                String[] w = key.split(" ");
+                output = pr2.execute("Place "+words.get(key).word.trim()+" "+Integer.toHexString(Integer.parseInt(w[0]))+" "+Integer.toHexString(Integer.parseInt(w[1]))+" "+w[2]);
+
+
+
+
+
+                String[] r =key.trim().split(" ");
+                putWord(words.get(key).word.trim(),Integer.parseInt(r[0]),Integer.parseInt(r[1]),r[2]);
+                p1 = output.trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+                p = new ArrayList<>();
+                for (String s : p1) {
+                    if (s.trim().length() != 0) {
+                        p.add(s);
+                    }
+                }
+                checkOutputLength(p, 16);
+                for (int i = 1; i < 16; i++) {
+
+                    if(p.get(0).startsWith("Welcome ")){
+                        if(!getBoardLine(i).equalsIgnoreCase(p.get(i+1))){
+                            throw new WrongAnswer("Line "+(i+1)+" of your board is not displaying correctly. Your program output is '"+p.get(i+1)+"' expected: '"+getBoardLine(i)+"'");
+                        }
+                    }else{
+                        if(!getBoardLine(i).equalsIgnoreCase(p.get(i))){
+                            throw new WrongAnswer("Line "+(i)+" of your board is not displaying correctly. Your program output is '"+p.get(i)+"' expected: '"+getBoardLine(i)+"'");
+                        }
+                    }
+                }
+            }
+            return CheckResult.correct();
+        }
+        //Invalid place: wrong row col out of range
+        Object[][] outOfRangeArray =  {
+                {"Place CROSSWORD 10 3 ACR"},
+                {"Place CROSSWORD 1F 3 DWN"},
+                {"Place CROSSWORD 3 BF ACR"},
+                {"Place CROSSWORD 3 AF DWN"},
+                {"Place CROSSWORD 0 4 DWN"},
+                {"Place CROSSWORD 4 0 DWN"},
+                {"Place CROSSWORD 4 10 DWN"},
+                {"Place CROSSWORD 10 5 DWN"}
+        };
+
+        @DynamicTest(data = "outOfRangeArray")
+        CheckResult outOfRangeTest( String message) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start(file);
+            testPlacePositionOutOfRangeMenu(message,pr2);
+            return CheckResult.correct();
+        }
+
+        //Invalid place command
+        Object[][] invalidPlaceArray =  {
+                {"Place 4 3 A"},
+                {"Place"},
+                {"A"},
+                {"a"},
+                {"Place CROSSWORD 4 3"},
+                {"Place CROSSWORD 3 A"},
+                {"a CROSSWORD 3  D"},
+                {"Place 4 "},
+                {"Place CROSSWORD 5"},
+                {"Place CROSSWORD"}
+        };
+
+        @DynamicTest(data = "invalidPlaceArray")
+        CheckResult invalidPlaceTest( String message){
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start(file);
+            testInvalidPlaceMenu(message,pr2);
+            return CheckResult.correct();
+        }
+        private static void putWord(String word, int row,int col, String direction){
+            row =row-1;
+            col=col-1;
+            word=word.toUpperCase();
+            for (int i = 0; i < word.length(); i++) {
+                if(direction.equals("ACROSS")||direction.equals("ACR")){
+                    board[row][col+i] = ""+word.charAt(i);
+                }else if(direction.equals("DOWN")||direction.equals("DWN")){
+                    board[row+i][col] = ""+word.charAt(i);
+                }
+            }
+        }
+        private void testPlaceInvalidDirectionMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlaceInvalidDirectionResponse(input, pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testPlaceCorrectOrCongratulationMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlaceCorrectOrCongratulationsResponse(pr.execute(input));
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testPlacePositionOutOfRangeMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlacePositionOutOfRangeResponse(input, pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testHintMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkHintResponse(input,pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+
+        private void testPlacePositionNotIntegerMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlacePositionNotIntegerResponse(input, pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testPlaceInvalidCharacterMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlaceInvalidCharacterResponse(input, pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+
+        private void testPlaceLongWordMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkPlaceLongWordResponse(input, pr);
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testInvalidPlaceMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkInvalidPlaceResponse(pr.execute(input));
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testValidCommandCase(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkValidCommandResponse(input, pr.execute(input));
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+
+
+
+
+        private void testExitMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                String output = pr.execute(input);
+                if(output.toLowerCase().contains("Invalid Command".toLowerCase())){
+                    throw new WrongAnswer("'" +input+ "' is a valid command");
+                } else if(!output.trim().equals("Bye.")||!pr.isFinished()){
+                    throw new WrongAnswer("Your program should print 'Bye.' and terminate.");
+                }
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testShuffleMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                String output = pr.execute(input);
+                //Check board if properly initialised
+                ArrayList<String> p = new ArrayList<>();
+                String[] p1 = output.replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+
+                for (String s : p1) {
+                    if (s.trim().length() != 0) {
+                        p.add(s);
+                    }
+                }
+                board = new String[ROW][COL];
+                words = new HashMap<>();
+
+                checkOutputLength(p, 16);
+
+                //Determine contents of the tray - should be on line 17 (index 16)
+                //String f = p.get(16).substring("tray: ".length());
+
+                String trayLine = null;
+                for (String s: p){
+                    if (s.toUpperCase().strip().startsWith("TRAY:")){
+                        trayLine = s;
+                    }
+                }
+
+                if (trayLine == null){
+                    throw new WrongAnswer("Could not locate the current tray in your output. The line should start with 'Tray:'");
+                }
+
+                String f = trayLine.replace(" ", "").strip().substring("tray:".length());
+
+                //String[]  data=puzzles.puzzles.get(0).toUpperCase().split(" ");
+                int t =0;
+                for (int i = 0; i < puzzles.puzzles.size(); i++) {
+                    if(puzzles.puzzles.get(i).letter.trim().toUpperCase().startsWith(f.trim().toUpperCase())){
+                       // data = puzzles.get(i).toUpperCase().split(" ");
+                        t=i;
+                        break;
+                    }
+                }
+                tray = puzzles.puzzles.get(t).letter.toUpperCase();
+
+                for (int i = 0; i < (puzzles.puzzles.get(t).words.size()); i++) {
+                    words.put(puzzles.puzzles.get(t).words.get(i).position+" "+puzzles.puzzles.get(t).words.get(i).direction,puzzles.puzzles.get(t).words.get(i));
+                }
+                initialiseBoard();
+                for (int i = 0; i < 16; i++) {
+                    if(!getEmptyBoardLine(i).equals(p.get(i))){
+                        throw new WrongAnswer("Line "+(i+1)+" of your board is not displaying correctly. Your program output is '"+p.get(i)+"' expected: '"+getEmptyBoardLine(i)+"'");
+                    }
+                }
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private static void testNoMorePuzzle( TestedProgram pr){
+            if(!pr.isFinished()){
+                String output = pr.execute("c");
+                //Check board if properly initialised
+                ArrayList<String> p = new ArrayList<>();
+                String[] p1 = output.replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+
+                for (String s : p1) {
+                    if (s.trim().length() != 0) {
+                        p.add(s);
+                    }
+                }
+                if(p.size()!=1){
+                    throw new WrongAnswer("Your program should display 'No more puzzles. Bye.' and terminate");
+                }else if(!p.get(0).equals("No more puzzles. Bye.")){
+                    throw new WrongAnswer("Your program should display 'No more puzzles. Bye.' and terminate");
+                }
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private static void invalidCommand(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                if(!pr.execute(input).toLowerCase().contains("Invalid command".toLowerCase())){
+                    throw new WrongAnswer("Your program should not accept invalid commands.'" +input+ "' is not a valid command");
+                }
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private  static void initialiseBoard(){
+            for(int i=0;i<15;i++) {
+                for (int j = 0; j < 15; j++) {
+                    board[i][j] = "#";
+                }
+            }
+
+            for (String key : words.keySet()) {
+                String[] u =key.split(" ");
+                write(words.get(key).word.toUpperCase(),u[0]+" "+u[1],u[2]);
+            }
+        }
+        private static void write(String word, String pos,String direction){
+            String[] p =pos.split(" ");
+            int row= Integer.parseInt(p[0]) - 1;
+            int col= Integer.parseInt(p[1]) - 1;
+            for (int i = 0; i < word.trim().length(); i++) {
+                if(direction.equals("ACROSS")||direction.equals("ACR")){
+                    board[row][col+i]=" ";//+word.charAt(i);
+                }else if(direction.equals("DOWN")||direction.equals("DWN")){
+                    board[row+i][col]=" ";//+word.charAt(i);;
+                }
+            }
+        }
+
+
+        private String getEmptyBoardLine(int line){
+            if (line == 0) {
+                return "  1 2 3 4 5 6 7 8 9 A B C D E F";
+            }
+            StringBuilder n = new StringBuilder("" + Integer.toHexString(line).toUpperCase());
+            for (int j = 0; j < 15; j++) {
+                n.append(" ").append(board[line - 1][j]);
+            }
+            return n.toString();
+        }
+        private String getBoardLine(int line){
+            if (line == 0) {
+                return "  1 2 3 4 5 6 7 8 9 A B C D E F";
+            }
+            StringBuilder n = new StringBuilder("" + Integer.toHexString(line).toUpperCase());
+            for (int j = 0; j < 15; j++) {
+                n.append(" ").append(board[line - 1][j]);
+            }
+            return n.toString();
+        }
+
+        private static boolean completed(){
+            boolean c= true;
+            for (String[] strings : board) {
+                for (String string : strings) {
+                    if (string.equals(" ")) {
+                        c = false;
+                        break;
+                    }
+                }
+            }
+            return c;
+        }
+        private void checkPlaceCorrectOrCongratulationsResponse(String output){
+            String[] p1 = output.trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+
+            checkOutputLength(p, 17);
+
+            if(!p.get(17).toLowerCase().contains("Congratulations! Would you like to load another puzzle? Yes/No.".toLowerCase())&&completed()){
+
+                throw new WrongAnswer("Your program should display 'Your tray is empty.'");
+            }
+
+        }
+        private void checkHintResponse(String input, TestedProgram pr){
+            String[] output = pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> nonEmptyLines = new ArrayList<>();
+            for (String s : output) {
+                if (s.trim().length() != 0) {
+                    nonEmptyLines.add(s);
+                }
+            }
+
+            checkOutputLength(nonEmptyLines, 0);
+
+            String outputHint = nonEmptyLines.get(0).trim();
+            //Change to decimal from hex
+            String[] r=  input.substring("hint ".length()).split(" ");
+            String p = Integer.parseInt(r[0],16) + " "+Integer.parseInt(r[1],16) +" "+r[2];
+            String s = words.get(p).hint.trim();
+
+            if(!outputHint.equalsIgnoreCase(s)){
+                throw new WrongAnswer("Your program should display the hint for '"+input.substring("hint ".length())+"': "+ s + "\n------\nExpected:\n" + s +"\n------"+"\nFound:" + outputHint + "\n------");
+            }
+
+        }
+        private void checkValidCommandResponse(String input, String output){
+            if(output.toLowerCase().contains("Invalid".toLowerCase())){
+                throw new WrongAnswer("Your program is rejecting valid commands '"+input+"'");
+            }
+        }
+        private void checkPlaceInvalidCharacterResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+
+            checkOutputLength(p, 16);
+
+            if(!p.get(16).toLowerCase().contains("Invalid letter".toLowerCase())){
+                throw new WrongAnswer("Your program allows placing a character not on the tray.");
+            }
+
+        }
+        private void checkPlaceLongWordResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+
+            checkOutputLength(p, 16);
+
+            if(!p.get(16).toLowerCase().contains("Incorrect word. The word is too long.".toLowerCase())){
+                throw new WrongAnswer("Your program is not responding properly to an incorrect word. Display 'Incorrect word. The word is too long.'");
+            }
+        }
+        private void checkPlacePositionNotIntegerResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+
+            checkOutputLength(p, 16);
+
+            if(!p.get(16).toLowerCase().contains("Invalid command. Use 'Place Word row(Hexadecimal) column(Hexadecimal) DIRECTION'".toLowerCase())){
+                throw new WrongAnswer("Your program should display 'Invalid command. Use 'Place Word row(Hexadecimal) column(Hexadecimal) DIRECTION'.' for row or column not integer.");
+            }
+        }
+
+        private void checkPlacePositionOutOfRangeResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+
+            checkOutputLength(p, 16);
+
+            if(!p.get(16).toLowerCase().contains("Invalid position. Position out of range.".toLowerCase())){
+                throw new WrongAnswer("Your program should display 'Invalid position. Position out of range.'");
+            }
+
+        }
+        private void checkPlaceInvalidDirectionResponse(String input, TestedProgram pr){
+            String[] p1 =pr.execute(input).trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            checkOutputLength(p, 16);
+
+            if(!p.get(16).toLowerCase().contains("Invalid direction.".toLowerCase())){
+                throw new WrongAnswer("Your program should display 'Invalid direction.' when wrong directions are given.");
+            }
+
+        }
+        private void checkInvalidPlaceResponse(String output){
+            String[] p1 = output.trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+
+            checkOutputLength(p, 16);
+
+            if(!p.get(16).toLowerCase().contains("Invalid command. Use 'Place Word row(Hexadecimal) column(Hexadecimal) DIRECTION'.".toLowerCase())){
+                throw new WrongAnswer("Your program should out 'Invalid command. Use 'Place Word row(Hexadecimal) column(Hexadecimal) DIRECTION");
+            }
+
+        }
+        private static Puzzles read(){
+            StringBuilder d= new StringBuilder();
+            Puzzles data = null;
+
+            try {
+                File myObj = new File(file);
+                Scanner myReader = new Scanner(myObj);
+                while (myReader.hasNextLine()) {
+                    String data1 = myReader.nextLine();
+                    d.append(data1);
+                }
+                Gson gson = new Gson();
+                data = gson.fromJson(d.toString(), Puzzles.class);
+                myReader.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+            return data;
+        }
+    }
+    class Puzzles{
+        ArrayList<Puzzle> puzzles = new ArrayList<>();
+    }
+    class Puzzle{
+        String letter;
+        ArrayList<Word> words;
+    }
+    class Word{
+        String word;
+        String position;
+        String direction;
+        String hint;
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/projects/275/stages/1397/implement#comment
+status: Unchecked
+record: -1

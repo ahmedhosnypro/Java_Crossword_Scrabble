@@ -1,0 +1,13 @@
+type: hyperskill
+title: Crossword Scrabble
+language: English
+summary: "<p>Solving crossword puzzles and playing scrabble with friends is fun. How\
+  \ about combining both activities into one? In this project, create a board game\
+  \ where players pick seven letters and crack several words to solve a crossword\
+  \ puzzle. Sounds interesting?</p><br/><br/>Learn more at <a href=\"https://hyperskill.org/projects/275?utm_source=ide&utm_medium=ide&utm_campaign=ide&utm_content=project-card\"\
+  >https://hyperskill.org/projects/275</a>"
+programming_language: Java
+programming_language_version: 11
+content:
+- Crossword Scrabble
+mode: Study

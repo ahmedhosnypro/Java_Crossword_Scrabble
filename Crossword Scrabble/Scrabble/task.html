@@ -1,0 +1,176 @@
+<div class="step-text">
+<h5 id="description">Description</h5>
+<p>Shuffle the tiles and allow users to pick seven of them to form words from the chosen letter tiles. As users pick tiles, reduce the number of them in the bag and increase the number of tiles in the tray.</p>
+<h5 id="objectives">Objectives</h5>
+<p>Build on the program you created in stage 1, your program should do the following;</p>
+<ul>
+<li>Your program should print the tiles in the tray (if there are tiles on the tray), the bag's content, and prompt users with a menu:
+    <pre><code class="language-no-highlight">A. Shuffle
+
+B. Pick
+
+C. Exit</code></pre>
+</li>
+<li>When <code class="language-python">Shuffle</code> or <code class="language-python">A</code> is selected, the program should shuffle the tiles in the bag and print out the bag's content in one line. If the bag does not contain any tiles, print <code class="language-python">The bag is empty.</code> as your first line of output.</li>
+<li>When <code class="language-python">Pick</code> or <code class="language-python">B</code> is selected, the program should randomly pick seven tiles from the bag (or however many remain, if less than seven) and add them to the end of the tray. Display the chosen tiles in a single line; in the second line, print the bag's content without shuffling. If there are no more tiles to choose from, print <code class="language-python">No more tiles to pick.</code> as your first line of output.</li>
+<li>When <code class="language-python">Exit</code> or <code class="language-python">C</code> is selected, display <code class="language-python">Bye.</code><span style="color: #ff4363;"><strong> </strong></span>and terminate the program. Your program should run continuously until terminated by this command.</li>
+<li>If the command is not valid, display <code class="language-python">Invalid Command.</code> as your first line of output and print the menu. Any command should be case-insensitive. </li>
+</ul>
+<h5 id="examples">Examples</h5>
+<p>The greater-than symbol followed by a space (<code class="language-python">&gt; </code>) represents the user input. Note that it's not part of the input.</p>
+<p><em>Note that <code class="language-python">*</code> represents Blank/Wild tiles.</em></p>
+<p><strong>Example 1:</strong></p>
+<pre><code class="language-python">Welcome to Crossword Scrabble
+
+Bag: AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; A
+
+Bag: WEORITJBTAUNARNAIDSGREOXEOLEPOOITWBIZYGHCSDTTOGFVAIPDEUMEIFNSSQCTALROVRENLAILAEAIUIEEKDHAEYMNUNROE
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; Shuffle
+
+Bag: IGQTGIACTMNAPKSFMLSOEUVHRANEBAVFDSBROESIETHYGERENREAOPRIWOAAWEDEITDIDOUAETIXOCLNIEUALTNIUORYOEZJNL
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; Exit
+
+Bye.</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="language-python">Welcome to Crossword Scrabble
+
+Bag: AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; Pick
+
+Tray: RXEDJAA
+
+Bag: AAAAAAABBCCDDDEEEEEEEEEEEFFGGGHHIIIIIIIIIKLLLLMMNNNNNNOOOOOOOOPPQRRRRRSSSSTTTTTTUUUUVVWWYYZ
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; B
+
+Tray: RXEDJAAGKIDETY
+
+Bag: AAAAAAABBCCDDEEEEEEEEEEFFGGHHIIIIIIIILLLLMMNNNNNNOOOOOOOOPPQRRRRRSSSSTTTTTUUUUVVWWYZ
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; Shuffle
+
+Bag: TSIDHETOIOIQAMACEUSRNNEVRDFLZAOMPAIEACINSEAIYEEREWISURHONOPOEALFRNIUTNGTLBGOOEULVWBT
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; C
+
+Bye.</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="language-python">Welcome to Crossword Scrabble
+
+Bag: AZ
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; B
+
+Tray: AZ
+
+Bag:
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; Shuffle
+The bag is empty.
+Tray: AZ
+
+Bag:
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; B
+No more tiles to pick.
+Tray: AZ
+
+Bag:
+
+What would you like to do?
+
+A. Shuffle
+
+B. Pick
+
+C. Exit
+
+&gt; C
+
+Bye.</code></pre>
+</div>

@@ -1,0 +1,409 @@
+type: edu
+files:
+- name: src/crossword/Main.java
+  visible: true
+  text: |-
+    package crossword;
+
+    public class Main {
+        public static void main(String[] args) {
+            System.out.println("Hello World!");
+        }
+    }
+  learner_created: false
+- name: src/crosswordScrabble.json
+  visible: true
+  learner_created: false
+- name: src/crosswordScrabble.txt
+  visible: true
+  text: |-
+    eaMgria Maria 4 9 ACR Grama 7 5 ACR Marriage 9 2 ACR Grime 11 2 ACR Mega 9 2 DWN Imager 4 5 DWN Mirage 4 9 DWN
+    Playfull Play 4 10 ACR Lapful 7 5 ACR Fully 10 3 ACR Layup 13 7 ACR Pull 4 10 DWN Playful 7 7 DWN Yap 11 11 DWN Flu 10 3 DWN
+    Edition Edition 5 7 ACR Iodine 9 7 ACR Noted 10 3 ACR ident 12 5 ACR End 7 10 ACR Tenioid 4 7 DWN Dent 9 9 DWN die 7 12 DWN ion 5 11 DWN
+    Friends Fined 4 9 ACR Fern 8 6 ACR Serif 10 9 ACR Fed 8 6 DWN Friends 4 9 DWN Den 4 13 DWN Fired 10 13 DWN
+    Deliver Devil 3 4 ACR Liver 5 6 ACR Relieved 9 4 ACR reived 11 10 ACR Delied 3 4 DWN Lever 3 7 DWN Elder 9 5 DWN Derive 9 10 DWN
+    Sparrow Roars 6 4 ACR Pows 7 8 ACR Arrow 9 7 ACR raws 10 11 ACR warps 12 8 ACR swap 9 1 ACR Rasp 6 4 DWN wraps 9 11 DWN Sparrow 6 8 DWN
+    Dancing Acid 8 10 ACR Caning 10 10 ACR Cain 12 7 ACR Gain 11 8 DWN Dancing 7 10 DWN Nag 10 14 DWN
+    Futuresl Turf 4 9 ACR Future 7 4 ACR Fuse 12 5 ACR Rut 10 2 ACR Fret 7 4 DWN Left 4 6 DWN Uterus 7 7 DWN True 4 9 DWN
+    Sconced Second 3 9 ACR Once 5 9 ACR Conned 7 9 ACR Nodes 9 7 ACR Send 13 4 ACR Nosed 9 7 DWN sconced 3 9 DWN Cones 5 11 DWN
+    Lengthy Gent 6 12 ACR Lent 10 12 ACR then 8 9 ACR lengthy 11 6 ACR leg 11 6 DWN Gel 11 9 DWN Gently 6 12 DWN
+  learner_created: false
+- name: src/scrabbleTilesDistribution.txt
+  visible: true
+  text: |-
+    A 9
+    B 2
+    C 2
+    D 4
+    E 12
+    F 2
+    G 3
+    H 2
+    I 9
+    J 1
+    K 1
+    L 4
+    M 2
+    N 6
+    O 8
+    P 2
+    Q 1
+    R 6
+    S 4
+    T 6
+    U 4
+    V 2
+    W 2
+    X 1
+    Y 2
+    Z 1
+    * 2
+  learner_created: false
+- name: test/Stage4Test.java
+  visible: false
+  text: |-
+    import org.hyperskill.hstest.dynamic.DynamicTest;
+    import org.hyperskill.hstest.exception.outcomes.WrongAnswer;
+    import org.hyperskill.hstest.stage.StageTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import org.hyperskill.hstest.testing.TestedProgram;
+
+    import java.io.File;
+    import java.io.FileNotFoundException;
+    import java.lang.invoke.WrongMethodTypeException;
+    import java.util.ArrayList;
+    import java.util.HashMap;
+    import java.util.Scanner;
+
+    public class Stage4Test  extends StageTest {
+        String tray ="";
+        static ArrayList<String> puzzles;
+        static int ROW = 15;
+        static int COL = 15;
+        static HashMap<String, String> words = new HashMap<String, String>();
+        static String[][] board = new String[ROW][COL];
+        static String[][] correctBoard = new String[ROW][COL];
+        static String file = "./src/crosswordScrabble.txt";
+
+        @DynamicTest
+        CheckResult test1() {
+            TestedProgram pr = new TestedProgram();
+            String output = pr.start(file);
+            String[] p1 = output.trim().replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+            puzzles = read();
+            ArrayList<String> p = new ArrayList<>();
+            for (String s : p1) {
+                if (s.trim().length() != 0) {
+                    p.add(s);
+                }
+            }
+            if(p.size()<21){
+                throw new WrongAnswer("""
+                        Your output is not formatted correctly. It should be as follows:
+                        "Welcome to Crossword Scrabble
+                        Crossword Board
+                        Tray: 'tray content'
+                        Menu\"""");
+            }
+            if(!p.get(0).toLowerCase().trim().contains("Welcome to Crossword Scrabble".toLowerCase())){
+                throw new WrongAnswer("Your output should contain the game title " +
+                        "\"Welcome to Crossword Scrabble\"");
+            }
+            //Check Board
+
+
+            if (p.get(17).equalsIgnoreCase("tray: ") ){
+                throw new WrongAnswer("Your program should not print an empty tray.");
+            }
+            if (p.get(17).length()< 10){
+                throw new WrongAnswer("Your program generates less tiles than expected. Your program should read the data from the file correctly");
+            }
+            if (!p.get(18).toLowerCase().contains("What would you like to do?".toLowerCase())){
+                throw new WrongAnswer("Wrong menu title ");
+            }
+
+            if (!p.get(19).toLowerCase().contains("A. Shuffle".toLowerCase())){
+                throw new WrongAnswer("Wrong menu option: Menu 'A' is not correct");
+            }
+
+            if (!p.get(20).toLowerCase().contains("B. Exit".toLowerCase())){
+                throw new WrongAnswer("Wrong menu option: Menu 'B' is not correct");
+            }
+
+
+            //Determine contents of the tray - should be on line 18 (index 17)
+
+            String trayLine = null;
+            for (String s: p){
+                if (s.toUpperCase().strip().startsWith("TRAY:")){
+                    trayLine = s;
+                }
+            }
+
+            if (trayLine == null){
+                throw new WrongAnswer("Could not locate the current tray in your output. The line should start with 'Tray:'");
+            }
+
+            String f = trayLine.replace(" ", "").strip().substring("tray:".length());
+
+
+            String[] data = null;
+            for (String puzzle : puzzles) {
+                if (puzzle.toUpperCase().startsWith(f.toUpperCase())) {
+                    data = puzzle.toUpperCase().split(" ");
+                    break;
+                }
+            }
+
+            if (data == null){
+                throw new WrongAnswer("Your tray contents, '" + f + "' didn't match any of the expected puzzles.");
+            }
+
+            tray = data[0].toUpperCase();
+            words.clear();
+            for (int i = 0; i < (data.length-1)/4; i++) {
+                int o =i*4+1;
+                words.put(data[o+1]+" "+data[o+2]+" "+data[o+3],data[o]);
+            }
+            initialiseBoard();
+            //Check board if properly initialised
+            for (int i = 1; i < 16; i++) {
+                if(!getEmptyBoardLine(i).equals(p.get(i+1))){
+                    throw new WrongAnswer("Line "+(i+1)+" of your board is not displaying correctly. Your program output is '"+p.get(i+1)+"' expected: '"+getEmptyBoardLine(i)+"'");
+                }
+            }
+            invalidCommand("E",pr);
+            invalidCommand("B pick",pr);
+            //test Invalid commands
+            return CheckResult.correct();
+        }
+        // validate command case
+        Object[][] validCommandCaseArray =  {
+                {"A"},
+                {"B"},
+                {"a"},
+                {"b"},
+                {"shuffle"},
+                {"shufFle"},
+                {"exit"},
+                {"eXIT"},
+                {"EXIT"}
+        };
+        @DynamicTest(data = "validCommandCaseArray")
+        CheckResult test2( String message) {
+            tray ="";
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start(file);
+            testValidCommandCase(message,pr2);
+            return CheckResult.correct();
+        }
+        Object[][] exitArray =  {
+                {"b"},
+                {"exIt"},
+                {"B"}
+        };
+        @DynamicTest(data = "exitArray")
+        CheckResult test4( String message) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start(file);
+            testExitMenu(message,pr2);
+            return CheckResult.correct();
+        }
+
+        @DynamicTest
+        CheckResult test5( ) {
+            TestedProgram pr2 = new TestedProgram();
+            pr2.start(file);
+            testShuffleMenu(pr2);
+            testShuffleMenu(pr2);
+            testShuffleMenu(pr2);
+            testShuffleMenu(pr2);
+            testShuffleMenu(pr2);
+            testShuffleMenu(pr2);
+            testShuffleMenu(pr2);
+            testShuffleMenu(pr2);
+            testShuffleMenu(pr2);
+            testNoMorePuzzle(pr2);
+            return CheckResult.correct();
+        }
+        private void testValidCommandCase(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                checkValidCommandResponse(input, pr.execute(input));
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+
+        private void testExitMenu(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                String output = pr.execute(input);
+                if(output.toLowerCase().contains("Invalid Command".toLowerCase())){
+                    throw new WrongAnswer("'" +input+ "' is a valid command");
+                } else if(!output.trim().equals("Bye.")||!pr.isFinished()){
+                    throw new WrongAnswer("Your program should print 'Bye.' and terminate.");
+                }
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private void testShuffleMenu(TestedProgram pr){
+            if(!pr.isFinished()){
+                String output = pr.execute("a");
+                //Check board if properly initialised
+                ArrayList<String> p = new ArrayList<>();
+                String[] p1 = output.replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+
+                for (String s : p1) {
+                    if (s.trim().length() != 0) {
+                        p.add(s);
+                    }
+                }
+                board = new String[ROW][COL];
+                words = new HashMap<>();
+
+                checkOutputLength(p, 16);
+
+                //Determine contents of the tray - should be on line 17 (index 16)
+                //String f = p.get(16).substring("tray: ".length());
+
+                String trayLine = null;
+                for (String s: p){
+                    if (s.toUpperCase().strip().startsWith("TRAY:")){
+                        trayLine = s;
+                    }
+                }
+
+                if (trayLine == null){
+                    throw new WrongAnswer("Could not locate the current tray in your output. The line should start with 'Tray:'");
+                }
+
+                String f = trayLine.replace(" ", "").strip().substring("tray:".length());
+
+
+                String[] data = null; //puzzles.get(0).toUpperCase().split(" ");
+                for (String puzzle : puzzles) {
+                    if (puzzle.toUpperCase().startsWith(f.toUpperCase())) {
+                        data = puzzle.toUpperCase().split(" ");
+                        break;
+                    }
+                }
+
+                if (data == null){
+                    throw new WrongAnswer("Your tray contents, '" + f + "' didn't match any of the expected puzzles.");
+                }
+
+                for (int i = 0; i < (data.length-1)/4; i++) {
+                    int o =i*4+1;
+                    words.put(data[o+1]+" "+data[o+2]+" "+data[o+3],data[o]);
+                }
+                initialiseBoard();
+                for (int i = 0; i < 16; i++) {
+                    if(!getEmptyBoardLine(i).equals(p.get(i))){
+                        throw new WrongAnswer("Line "+(i+1)+" of your board is not displaying correctly. Your program output is '"+p.get(i)+"' expected: '"+getEmptyBoardLine(i)+"'");
+                    }
+                }
+
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+
+        private void checkOutputLength(ArrayList<String> p, int maxIndexAccessed) {
+            if (p.size() < maxIndexAccessed + 1){
+                throw new WrongAnswer("Your output was shorter than expected. At least " + (maxIndexAccessed+1) +
+                        " non-blank lines expected, but only " + p.size() + " found.");
+            }
+        }
+
+        private static void testNoMorePuzzle(TestedProgram pr){
+            if(!pr.isFinished()){
+                String output = pr.execute("a");
+                //Check board if properly initialised
+               ArrayList<String> p = new ArrayList<>();
+                String[] p1 = output.replace(System.getProperty("line.separator")+System.getProperty("line.separator"),"\n").split("\n");
+
+               for (String s : p1) {
+                    if (s.trim().length() != 0) {
+                        p.add(s);
+                    }
+                }
+               if(p.size()!=1){
+                    throw new WrongAnswer("Your program should display 'No more puzzles. Bye.' and terminate");
+               }else if(!p.get(0).equals("No more puzzles. Bye.")){
+                   throw new WrongAnswer("Your program should display 'No more puzzles. Bye.' and terminate");
+               }
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private static void invalidCommand(String input, TestedProgram pr){
+            if(!pr.isFinished()){
+                if(!pr.execute(input).toLowerCase().contains("Invalid command".toLowerCase())){
+                    throw new WrongAnswer("Your program should not accept invalid commands.'" +input+ "' is not a valid command");
+                }
+            }else{
+                throw new WrongAnswer("Your program ended prematurely. Your program should terminate on Exit command");
+            }
+        }
+        private  static void initialiseBoard(){
+            for(int i=0;i<15;i++) {
+                for (int j = 0; j < 15; j++) {
+                    board[i][j] = "#";
+                    correctBoard[i][j] = "#";
+                }
+            }
+
+            for (String key : words.keySet()) {
+                String[] u=key.split(" ");
+                write(words.get(key).toUpperCase(),u[0]+" "+u[1],u[2]);
+            }
+        }
+        private static void write(String word, String pos,String direction){
+            String[] p =pos.split(" ");
+            int row= Integer.parseInt(p[0]) - 1;
+            int col= Integer.parseInt(p[1]) - 1;
+            for (int i = 0; i < word.length(); i++) {
+                if(direction.equals("ACROSS")||direction.equals("ACR")){
+                    board[row][col+i]=""+word.charAt(i);
+                }else if(direction.equals("DOWN")||direction.equals("DWN")){
+                    board[row+i][col]=""+word.charAt(i);
+                }
+            }
+        }
+        private String getEmptyBoardLine(int line){
+            if (line == 0) {
+                return "  1 2 3 4 5 6 7 8 9 A B C D E F";
+            }
+            StringBuilder n = new StringBuilder("" + Integer.toHexString(line).toUpperCase());
+            for (int j = 0; j < 15; j++) {
+                n.append(" ").append(board[line - 1][j]);
+            }
+            return n.toString();
+        }
+        private void checkValidCommandResponse(String input, String output){
+            if(output.toLowerCase().contains("Invalid command".toLowerCase())){
+                throw new WrongAnswer("Your program is rejecting valid commands '"+input+"'");
+            }
+        }
+
+        private static ArrayList<String> read(){
+            ArrayList<String> a = new ArrayList<>();
+            try {
+                File myObj = new File(file);
+                Scanner myReader = new Scanner(myObj);
+                while (myReader.hasNextLine()) {
+                    String data = myReader.nextLine();
+                    a.add(data);
+                }
+                myReader.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+            return a;
+        }
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/projects/275/stages/1396/implement#comment
+status: Unchecked
+record: -1
